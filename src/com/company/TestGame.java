@@ -34,7 +34,7 @@ public class TestGame extends Game
         {
 
             Texture tilesTexture = new Texture("tiles.bmp");
-        
+
             ren = new PlaneTextureRenderer(32 * 50, 32 * 50, 0, GetRenderingEngine().GetSampler(tilesTexture));
             ren.SetTileSize(new Vector2f(1 / 10f, 1 / 10f));
             ren.SetOffSet(new Vector2f(2, 0));
@@ -42,12 +42,6 @@ public class TestGame extends Game
             ground = new GameObject();
             ground.AddComponent(ren);
             AddObject(ground);
-
-            anim = new Timeline<Double>();
-
-            anim.AddKeyframe(new Keyframe<Double>(1).PutKeyValue("value", 1.0d));
-            anim.AddKeyframe(new Keyframe<Double>(1).PutKeyValue("value", 2.0d));
-            anim.AddKeyframe(new Keyframe<Double>(1).PutKeyValue("value", 3.0d));
 
         } catch (URISyntaxException | IOException ex)
         {
