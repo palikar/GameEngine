@@ -66,6 +66,7 @@ public class Timeline<Type>
         {
             return;
         }
+
         keyDelta += delta;
         Keyframe nextFramekey = GetNextKeyframe();
         if (keyDelta >= nextFramekey.GetTimePosition())
