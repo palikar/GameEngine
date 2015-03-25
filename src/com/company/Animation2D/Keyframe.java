@@ -26,14 +26,14 @@ import java.util.HashMap;
 public class Keyframe<Type>
 {
 
-    private double duration;
+    private float timePosition;
     private HashMap<String, Type> keyValues;
     private Action enterAction;
     private Action exitAction;
 
-    public Keyframe(double duration)
+    public Keyframe(float timePosition)
     {
-        this.duration = duration;
+        this.timePosition = timePosition;
         keyValues = new HashMap<>();
 
     }
@@ -44,9 +44,9 @@ public class Keyframe<Type>
         return this;
     }
 
-    public final double GetDuration()
+    public final float GetTimePosition()
     {
-        return duration;
+        return timePosition;
     }
 
     public final Type GetData(String name)

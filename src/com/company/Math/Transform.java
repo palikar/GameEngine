@@ -128,9 +128,10 @@ public class Transform
         return scale;
     }
 
-    public void SetScale(Vector3f scale)
+    public Transform SetScale(Vector3f scale)
     {
         this.scale = scale;
+        return this;
     }
 
     public Quaternion GetRotation()
@@ -138,9 +139,10 @@ public class Transform
         return rotation;
     }
 
-    public void SetRotation(Quaternion rotation)
+    public Transform SetRotation(Quaternion rotation)
     {
         this.rotation = rotation;
+        return this;
     }
 
     public Vector3f GetPosition()
@@ -148,8 +150,9 @@ public class Transform
         return position;
     }
 
-    public void SetPosition(Vector3f position)
+    public Transform SetPosition(Vector3f position)
     {
         this.position = position;
+        return this;
     }
 }

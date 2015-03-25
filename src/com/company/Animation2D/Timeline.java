@@ -27,43 +27,64 @@ public class Timeline<Type>
 {
 
     private ArrayList<Keyframe<Type>> keyframes;
-    private Keyframe currentFrame;
-    private int currentFrameIndex;
+    private Keyframe lastFrame;
+    private int lastFrameIndex = 0;
     private int startIndex = 0;
-    private double keyDelta;
+    private float keyDelta;
     private boolean running = true;
     private Action switchKeyframesAction;
+    private float time;
+    private boolean repeat = false;
 
-    public Timeline()
+    public Timeline(float time)
     {
         keyframes = new ArrayList<>();
+        this.time = time;
+        keyDelta = 0.0f;
 
     }
 
     public Timeline AddKeyframe(Keyframe<Type> key)
     {
-        keyframes.add(key);
-        if (currentFrame == null)
+        return AddKeyframe(key, keyframes.size());
+    }
+
+    public Timeline AddKeyframe(Keyframe<Type> key, int position)
+    {
+        keyframes.add(position, key);
+        if (lastFrame == null)
         {
-            currentFrame = key;
+            lastFrame = key;
+            lastFrameIndex = position;
         }
         return this;
     }
 
-    public final void Update(double delta)
+    public void Update(double delta)
     {
         if (!running)
         {
             return;
         }
         keyDelta += delta;
-        if (keyDelta > currentFrame.GetDuration())
+        Keyframe nextFramekey = GetNextKeyframe();
+        if (keyDelta >= nextFramekey.GetTimePosition())
         {
-            currentFrame.KeyframeExitAction();
-            currentFrame = GetNextFrame();
+            lastFrame.KeyframeExitAction();
+            lastFrame = nextFramekey;
+            lastFrameIndex++;
             FrameSwitch();
-            currentFrame.KeyframeEnterAction();
-            keyDelta = 0.0d;
+            lastFrame.KeyframeEnterAction();
+        }
+        if (keyDelta >= time)
+        {
+            keyDelta = 0.0f;
+            lastFrame = keyframes.get(0);
+            lastFrameIndex = 0;
+            if (!repeat)
+            {
+                running = false;
+            }
         }
     }
 
@@ -74,30 +95,48 @@ public class Timeline<Type>
             throw new RuntimeException("Invali keyframe");
         }
         this.startIndex = startIndex;
-        this.currentFrameIndex = startIndex;
-        this.currentFrame = keyframes.get(this.currentFrameIndex);
+        this.lastFrameIndex = startIndex;
+        this.lastFrame = keyframes.get(this.lastFrameIndex);
         return this;
     }
 
-    private final Keyframe GetNextFrame()
+    public Type GetDataAt(int index, String name)
     {
-        int nextIndex = currentFrameIndex + 1;
-        if (nextIndex >= keyframes.size())
-        {
-            nextIndex = 0;
-        }
-        currentFrameIndex = nextIndex;
-        return keyframes.get(currentFrameIndex);
+        return keyframes.get(index).GetData(name);
+
     }
 
-    public final Object GetCurrentKeyValue(String name)
+    public final Keyframe GetLastKeyframe()
     {
-        return currentFrame.GetData(name);
+        return lastFrame;
+    }
+
+    public final Keyframe GetNextKeyframe()
+    {
+        int index = lastFrameIndex + 1;
+        return keyframes.get(index >= keyframes.size() ? 0 : index);
+    }
+
+    public final int GetLastKeyframeIndex()
+    {
+        return lastFrameIndex;
+    }
+
+    public final int GetNextKeyframeIndex()
+    {
+        int index = lastFrameIndex + 1;
+        return index >= keyframes.size() ? 0 : index;
     }
 
     public final Timeline SetRunning(boolean enable)
     {
         this.running = enable;
+        return this;
+    }
+
+    public final Timeline SetRepeat(boolean enable)
+    {
+        this.repeat = enable;
         return this;
     }
 
@@ -113,6 +152,21 @@ public class Timeline<Type>
         {
             switchKeyframesAction.Perform();
         }
+    }
+
+    public float GetCurrentDelta()
+    {
+        return keyDelta;
+    }
+
+    public int GetKeyframesCount()
+    {
+        return keyframes.size();
+    }
+
+    public boolean IsRunning()
+    {
+        return running;
     }
 
 }
