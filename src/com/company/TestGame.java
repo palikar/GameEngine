@@ -1,8 +1,6 @@
 package com.company;
 
-import com.company.Animation.Keyframe;
 import com.company.Animation.Timeline;
-import com.company.Components.Components2D.SpriteAnimator;
 import com.company.Components.Components2D.PlaneTextureRenderer;
 import com.company.Core.CoreEngine;
 import com.company.Core.Game;
@@ -11,7 +9,6 @@ import com.company.Math.Vector2f;
 import com.company.Rendering.Texture;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +21,7 @@ public class TestGame extends Game
     GameObject ground;
     GameObject person;
     Timeline<Double> anim;
+    boolean freeLook;
 
     @Override
 
@@ -42,25 +40,8 @@ public class TestGame extends Game
             ren.SetTexCoordMult(new Vector2f(50, 50));
             ground = new GameObject();
             ground.AddComponent(ren);
+
             AddObject(ground);
-
-            ArrayList<Vector2f> frames = new ArrayList<Vector2f>();
-            frames.add(new Vector2f(0, 1));
-            frames.add(new Vector2f(1, 1));
-            frames.add(new Vector2f(2, 1));
-            //frames.add(new Vector2f(3, 0));
-            //frames.add(new Vector2f(4, 0));
-            //frames.add(new Vector2f(5, 0));
-            //frames.add(new Vector2f(6, 0));
-
-            SpriteAnimator animPerson = new SpriteAnimator(32f, 32f, 0.5f, GetRenderingEngine().GetSampler(wizard), new Vector2f(2, 0));
-            animPerson.SetTileSize(new Vector2f(1 / 3f, 1 / 4f));
-            animPerson.AddAnimation("walkForward", frames, 0.5f, true);
-            animPerson.GetAnimator().Play("walkForward");
-
-            person = new GameObject();
-            person.AddComponent(animPerson);
-            AddObject(person);
 
         } catch (IOException | URISyntaxException ex)
         {
@@ -79,6 +60,7 @@ public class TestGame extends Game
     protected void Input(com.company.Core.Input input)
     {
         super.Input(input);
+
     }
 
     @Override
@@ -99,7 +81,7 @@ public class TestGame extends Game
                 -1, 1);
         GetRenderingEngine().GetCamera().SetMoveSpeed(1f);
         GetRenderingEngine().GetCamera().SetScrollEnable(true);
-        // GetRenderingEngine().GetCamera().InitPrescpectiveProjection((float) Math.toRadians(90), 3f / 4f, 0.001f, 10000f);
+        GetRenderingEngine().GetCamera().InitPrescpectiveProjection((float) Math.toRadians(90), 3f / 4f, 0.001f, 10000f);
 
     }
 
