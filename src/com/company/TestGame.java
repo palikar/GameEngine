@@ -1,7 +1,8 @@
 package com.company;
 
-import com.company.Animation2D.Keyframe;
-import com.company.Animation2D.Timeline;
+import com.company.Animation.Keyframe;
+import com.company.Animation.Timeline;
+import com.company.Components.Components2D.SpriteAnimator;
 import com.company.Components.Components2D.PlaneTextureRenderer;
 import com.company.Core.CoreEngine;
 import com.company.Core.Game;
@@ -10,10 +11,9 @@ import com.company.Math.Vector2f;
 import com.company.Rendering.Texture;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 
 /**
  * Created by Stanislav on 22.2.2015 г..
@@ -21,8 +21,8 @@ import javafx.event.EventHandler;
 public class TestGame extends Game
 {
 
-    PlaneTextureRenderer ren;
     GameObject ground;
+    GameObject person;
     Timeline<Double> anim;
 
     @Override
@@ -33,17 +33,36 @@ public class TestGame extends Game
         try
         {
 
-            Texture tilesTexture = new Texture("tiles.bmp");
+            Texture tilesTexture = new Texture("tiles.png");
+            Texture wizard = new Texture("robot.png");
 
-            ren = new PlaneTextureRenderer(32 * 50, 32 * 50, 0, GetRenderingEngine().GetSampler(tilesTexture));
+            PlaneTextureRenderer ren = new PlaneTextureRenderer(32 * 50, 32 * 50, 0, GetRenderingEngine().GetSampler(tilesTexture));
             ren.SetTileSize(new Vector2f(1 / 10f, 1 / 10f));
-            ren.SetOffSet(new Vector2f(2, 0));
+            ren.SetOffSet(new Vector2f(0, 0));
             ren.SetTexCoordMult(new Vector2f(50, 50));
             ground = new GameObject();
             ground.AddComponent(ren);
             AddObject(ground);
 
-        } catch (URISyntaxException | IOException ex)
+            ArrayList<Vector2f> frames = new ArrayList<Vector2f>();
+            frames.add(new Vector2f(0, 1));
+            frames.add(new Vector2f(1, 1));
+            frames.add(new Vector2f(2, 1));
+            //frames.add(new Vector2f(3, 0));
+            //frames.add(new Vector2f(4, 0));
+            //frames.add(new Vector2f(5, 0));
+            //frames.add(new Vector2f(6, 0));
+
+            SpriteAnimator animPerson = new SpriteAnimator(32f, 32f, 0.5f, GetRenderingEngine().GetSampler(wizard), new Vector2f(2, 0));
+            animPerson.SetTileSize(new Vector2f(1 / 3f, 1 / 4f));
+            animPerson.AddAnimation("walkForward", frames, 0.5f, true);
+            animPerson.GetAnimator().Play("walkForward");
+
+            person = new GameObject();
+            person.AddComponent(animPerson);
+            AddObject(person);
+
+        } catch (IOException | URISyntaxException ex)
         {
             Logger.getLogger(TestGame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,8 +85,6 @@ public class TestGame extends Game
     protected void Update(double delta)
     {
         super.Update(delta);
-        anim.Update(delta);
-
     }
 
     @Override
@@ -80,9 +97,9 @@ public class TestGame extends Game
                 -GetEngine().GetHeight() / 7,
                 GetEngine().GetHeight() / 7,
                 -1, 1);
-        GetRenderingEngine().GetCamera().SetMoveSpeed(10f);
+        GetRenderingEngine().GetCamera().SetMoveSpeed(1f);
         GetRenderingEngine().GetCamera().SetScrollEnable(true);
-        GetRenderingEngine().GetCamera().InitPrescpectiveProjection((float) Math.toRadians(90), 3f / 4f, 0.001f, 10000f);
+        // GetRenderingEngine().GetCamera().InitPrescpectiveProjection((float) Math.toRadians(90), 3f / 4f, 0.001f, 10000f);
 
     }
 

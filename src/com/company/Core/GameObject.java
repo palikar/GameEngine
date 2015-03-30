@@ -38,6 +38,10 @@ public class GameObject implements ShaderedObject
     {
         component.Init(this);
         components.add(component);
+        if (game != null)
+        {
+            game.ObjectAdded();
+        }
         return this;
     }
 

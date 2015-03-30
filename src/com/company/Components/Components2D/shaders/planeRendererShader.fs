@@ -12,7 +12,8 @@ uniform vec2 tileSize;
 
 void main()
 {       
-	vec4 col = texture2D(texture,fract(texCoord*texCoordMult)*tileSize+offSet);
+	vec2 sa = texCoordMult;
+        vec4 col = texture2D(texture,fract(texCoord*texCoordMult)*tileSize+offSet);
         if(col.a == 0){
             discard;
         }

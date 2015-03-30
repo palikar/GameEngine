@@ -78,11 +78,11 @@ public class CoreEngine
             while (unprocessedTime > frameTime)
             {
                 render = true;
+                unprocessedTime -= frameTime;
                 if (window.isCloseRequested())
                 {
                     Stop();
                 }
-                unprocessedTime -= frameTime;
                 game.Input(input);
                 game.Update(frameTime);
                 input.Update();
@@ -100,7 +100,6 @@ public class CoreEngine
                 {
                     game.Render();
                     window.Render();
-
                     frames++;
                 } else
                 {

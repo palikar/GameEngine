@@ -18,6 +18,7 @@ public abstract class Game
     private RenderingEngine renderingEngine;
     private Camera mainCamera;
     private boolean shaderSorting = false;
+    private boolean newAdded = false;
 
     public void Init(CoreEngine engine)
     {
@@ -36,6 +37,7 @@ public abstract class Game
     protected void AddObject(GameObject object)
     {
         GetRootGameObject().AddChild(object);
+        ObjectAdded();
     }
 
     protected void Update(double delta)
@@ -51,8 +53,9 @@ public abstract class Game
 
     protected void Render()
     {
-        if (shaderSorting)
+        if (shaderSorting && newAdded)
         {
+            newAdded = false;
             ArrayList<ShaderedObject> objs = GetAllObjectsToRender(rootGameObject);
 
             for (ShaderedObject obj : objs)
@@ -106,28 +109,20 @@ public abstract class Game
             }
 
         }
-        
-        
-
-        Collections.sort(objects, new Comparator<ShaderedObject>()
+        Collections.sort(objects, (o1, o2) ->
         {
-
-            @Override
-            public int compare(ShaderedObject o1, ShaderedObject o2)
+            if (o1.GetShader() != null && o2.GetShader() != null)
             {
-                if (o1.GetShader() != null && o2.GetShader() != null)
+                if (o1.GetShader().GetShader() == o2.GetShader().GetShader())
                 {
-                    if (o1.GetShader().GetShader() == o2.GetShader().GetShader())
-                    {
-                        return 0;
-                    } else
-                    {
-                        return 1;
-                    }
-
+                    return 0;
+                } else
+                {
+                    return 1;
                 }
-                return 0;
+
             }
+            return 0;
         });
         return objects;
     }
@@ -135,5 +130,10 @@ public abstract class Game
     public void SetShaderSorting(boolean shaderSorting)
     {
         this.shaderSorting = shaderSorting;
+    }
+
+    public void ObjectAdded()
+    {
+        newAdded = true;
     }
 }

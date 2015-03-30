@@ -1,6 +1,7 @@
 package com.company.Rendering;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_SRGB;
 
 /**
@@ -9,9 +10,10 @@ import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_SRGB;
 public class RenderingEngine
 {
 
-    private static RenderingEngine instance = new RenderingEngine();
+    private static final RenderingEngine instance = new RenderingEngine();
     private Camera camera = null;
     private Texture[] textures;
+    private final int maxTextureCnt = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
     private int currentShader;
 
     private RenderingEngine()
@@ -26,8 +28,8 @@ public class RenderingEngine
         glCullFace(GL_BACK);
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_FRAMEBUFFER_SRGB);
-        textures = new Texture[32];
+        //glEnable(GL_FRAMEBUFFER_SRGB);
+        textures = new Texture[maxTextureCnt];
     }
 
     public void BindShader(Shader shader)

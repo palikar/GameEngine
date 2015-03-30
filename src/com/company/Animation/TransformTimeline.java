@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.company.Animation2D;
+package com.company.Animation;
 
 import com.company.Math.Transform;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class TransformTimeline extends Timeline<Transform>
     public Transform GetCurrenteTransform()
     {
         int startIndex = GetLastKeyframeIndex();
-       // System.out.println(startIndex);
+
 
         Keyframe<Transform> startKey = GetLastKeyframe();
         Keyframe<Transform> endKey = GetNextKeyframe();

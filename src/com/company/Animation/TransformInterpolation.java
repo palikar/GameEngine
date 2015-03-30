@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.company.Animation2D;
+package com.company.Animation;
 
+import com.company.Math.Interpolation;
 import com.company.Math.Quaternion;
 import com.company.Math.Transform;
 import com.company.Math.Vector3f;

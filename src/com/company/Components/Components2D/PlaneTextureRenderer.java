@@ -13,8 +13,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lwjgl.opengl.GL11;
 
-public final class PlaneTextureRenderer extends GameComponent
+public class PlaneTextureRenderer extends GameComponent
 {
 
     float width, height, zIndex;
@@ -24,6 +25,7 @@ public final class PlaneTextureRenderer extends GameComponent
     int texture;
     Mesh mesh;
     PlaneTextureRenereShader shader = new PlaneTextureRenereShader();
+    private boolean blending = false;
 
     public PlaneTextureRenderer(float width, float height, float zIndex, int texture) throws IOException, URISyntaxException
     {
@@ -37,7 +39,7 @@ public final class PlaneTextureRenderer extends GameComponent
         this.texture = texture;
         this.zIndex = zIndex;
 
-        this.texCoordMult = new Vector2f();
+        this.texCoordMult = new Vector2f(1f, 1f);
         this.tileSize = new Vector2f();
         this.offSet = new Vector2f();
 
@@ -122,10 +124,17 @@ public final class PlaneTextureRenderer extends GameComponent
         super.Render(renderingEngine);
         GetParent().GetGame().GetRenderingEngine().BindShader(GetShader());
         UpdateUniforms();
-        
-        
+        if (blending)
+        {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        }
 
         mesh.draw();
+        if (blending)
+        {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
 
     }
 
@@ -140,7 +149,7 @@ public final class PlaneTextureRenderer extends GameComponent
         GetShader().SetUniform("transformMatrix", GetParent().GetTransform().GetTransformation());
         GetShader().SetUniform("viewMatrix", GetParent().GetGame().GetRenderingEngine().GetCamera().GetViewProjection());
         GetShader().SetUniform("texCoordMult", texCoordMult);
-        GetShader().SetUniform("offSet", offSet);
+        GetShader().SetUniform("offSet", offSet.Mul(tileSize));
         GetShader().SetUniform("tileSize", tileSize);
 
     }
@@ -171,6 +180,12 @@ public final class PlaneTextureRenderer extends GameComponent
     public Shader GetShader()
     {
         return shader.GetBaseShader();
+    }
+
+    public PlaneTextureRenderer EnableBlending()
+    {
+        blending = true;
+        return this;
     }
 
 }

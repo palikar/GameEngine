@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.company.Animation2D;
+package com.company.Animation;
 
 import java.util.ArrayList;
 
@@ -31,10 +31,11 @@ public class Timeline<Type>
     private int lastFrameIndex = 0;
     private int startIndex = 0;
     private float keyDelta;
-    private boolean running = true;
+    private boolean running = false;
     private Action switchKeyframesAction;
     private float time;
     private boolean repeat = false;
+    private static final Keyframe<Object> infinity = new Keyframe<>(Float.MAX_VALUE);
 
     public Timeline(float time)
     {
@@ -69,6 +70,7 @@ public class Timeline<Type>
 
         keyDelta += delta;
         Keyframe nextFramekey = GetNextKeyframe();
+
         if (keyDelta >= nextFramekey.GetTimePosition())
         {
             lastFrame.KeyframeExitAction();
@@ -87,6 +89,7 @@ public class Timeline<Type>
                 running = false;
             }
         }
+
     }
 
     public final Timeline SetStartIndex(int startIndex)
@@ -115,7 +118,11 @@ public class Timeline<Type>
     public final Keyframe GetNextKeyframe()
     {
         int index = lastFrameIndex + 1;
-        return keyframes.get(index >= keyframes.size() ? 0 : index);
+        if (index >= keyframes.size())
+        {
+            return infinity;
+        }
+        return keyframes.get(index);
     }
 
     public final int GetLastKeyframeIndex()
@@ -126,7 +133,7 @@ public class Timeline<Type>
     public final int GetNextKeyframeIndex()
     {
         int index = lastFrameIndex + 1;
-        return index >= keyframes.size() ? 0 : index;
+        return index >= keyframes.size() ? keyframes.size() - 1 : index;
     }
 
     public final Timeline SetRunning(boolean enable)
@@ -168,6 +175,26 @@ public class Timeline<Type>
     public boolean IsRunning()
     {
         return running;
+    }
+
+    public Timeline Stop()
+    {
+        running = false;
+        return this;
+    }
+
+    public Timeline Reset()
+    {
+        keyDelta = 0.0f;
+        lastFrame = keyframes.get(0);
+        lastFrameIndex = 0;
+        return this;
+    }
+
+    public Timeline Start()
+    {
+        running = true;
+        return this;
     }
 
 }

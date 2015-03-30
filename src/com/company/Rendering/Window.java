@@ -12,8 +12,10 @@ import java.nio.ByteBuffer;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
+import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.system.MemoryUtil.*;
-
 
 /**
  * Created by Stanislav on 15.2.2015 г..
@@ -25,9 +27,7 @@ public class Window
 
     private GLFWErrorCallback errorCallback;
 
-
     private long window;
-
 
     private Window()
     {
@@ -45,7 +45,6 @@ public class Window
         Init(width, height, title);
         GLContext.createFromCurrent();
 
-
     }
 
     public void Render()
@@ -58,11 +57,16 @@ public class Window
     private void Init(int width, int height, String title)
     {
         if (GlobalSpace.DEBUG)
+        {
             System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
+            System.out.println("Maximum OpenGL texture samplers:" + GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+        }
         glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
         if (glfwInit() != GL11.GL_TRUE)
+        {
             throw new IllegalStateException("Unable to initialize GLFW");
+        }
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -70,8 +74,9 @@ public class Window
         this.window = glfwCreateWindow(width, height, title, NULL, NULL);
 
         if (window == NULL)
+        {
             throw new RuntimeException("Failed to create the GLFW window");
-
+        }
 
         ByteBuffer videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (GLFWvidmode.width(videoMode) - width) / 2, (GLFWvidmode.height(videoMode) - height) / 2);
@@ -80,7 +85,6 @@ public class Window
         glfwSwapInterval(1);
 
         glfwShowWindow(window);
-
 
     }
 
