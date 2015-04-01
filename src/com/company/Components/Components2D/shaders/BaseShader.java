@@ -28,7 +28,7 @@ import java.net.URISyntaxException;
 public abstract class BaseShader
 {
 
-    protected static Shader shader;
+    protected Shader shader;
 
     public abstract Shader GetBaseShader();
 

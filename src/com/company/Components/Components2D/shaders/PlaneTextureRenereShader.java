@@ -30,6 +30,7 @@ public class PlaneTextureRenereShader extends BaseShader
 
     public void InitShader() throws IOException, URISyntaxException
     {
+        
         if (shader == null)
         {
             shader = new Shader();

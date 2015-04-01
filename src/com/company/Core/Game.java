@@ -19,6 +19,8 @@ public abstract class Game
     private Camera mainCamera;
     private boolean shaderSorting = false;
     private boolean newAdded = false;
+    private boolean guiEnabled = false;
+    private GuiRenderer guiRenderer;
 
     public void Init(CoreEngine engine)
     {
@@ -135,5 +137,31 @@ public abstract class Game
     public void ObjectAdded()
     {
         newAdded = true;
+    }
+
+    public void EnableGui()
+    {
+        if (guiRenderer == null)
+        {
+            guiRenderer = new GuiRenderer();
+            AddObject(new GameObject().AddComponent(guiRenderer));
+        }
+        guiRenderer.SetRenderEnable(true);
+        guiRenderer.SetUpdateEnable(true);
+        guiRenderer.SetInputEnable(true);
+        guiEnabled = true;
+    }
+
+    public void DisableGui()
+    {
+        guiEnabled = false;
+        guiRenderer.SetRenderEnable(false);
+        guiRenderer.SetInputEnable(false);
+        guiRenderer.SetInputEnable(false);
+    }
+
+    public GuiRenderer GetGui()
+    {
+        return guiRenderer;
     }
 }

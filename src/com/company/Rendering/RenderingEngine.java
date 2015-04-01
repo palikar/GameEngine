@@ -67,6 +67,7 @@ public class RenderingEngine
             firstFree = 0;
         }
 
+        
         textures[firstFree] = tex;
         tex.Bind(firstFree);
 

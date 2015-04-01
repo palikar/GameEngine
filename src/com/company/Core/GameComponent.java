@@ -12,6 +12,7 @@ public class GameComponent implements ShaderedObject
 {
 
     private GameObject parent;
+    private boolean render = true, update = true, input = true;
 
     public void Init(GameObject parent)
     {
@@ -20,14 +21,27 @@ public class GameComponent implements ShaderedObject
 
     public void Input(Input input)
     {
+        if (!this.input)
+        {
+            return;
+        }
+
     }
 
     public void Update(double delta)
     {
+        if (!this.render)
+        {
+            return;
+        }
     }
 
     public void Render(RenderingEngine renderingEngine)
     {
+        if (!this.update)
+        {
+            return;
+        }
     }
 
     protected GameObject GetParent()
@@ -54,5 +68,21 @@ public class GameComponent implements ShaderedObject
     @Override
     public void UpdateUniforms()
     {
+    }
+
+    public void SetRenderEnable(boolean b)
+    {
+        this.render = b;
+    }
+
+    public void SetUpdateEnable(boolean b)
+    {
+        this.update = b;
+    }
+
+    public void SetInputEnable(boolean b)
+    {
+        this.input = b;
+
     }
 }

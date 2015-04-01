@@ -91,7 +91,7 @@ public class CoreEngine
                 {
                     if (GlobalSpace.DEBUG)
                     {
-                        System.out.println("FPS:" + frames);
+                        window.SetTitle("FPS:" + frames);
                     }
                     frames = 0;
                     frameCounter = 0;

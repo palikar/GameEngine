@@ -13,8 +13,6 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
-import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
-import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.system.MemoryUtil.*;
 
 /**
@@ -104,5 +102,10 @@ public class Window
         errorCallback.release();
         glfwTerminate();
 
+    }
+
+    public void SetTitle(String string)
+    {
+        glfwSetWindowTitle(window, string);
     }
 }

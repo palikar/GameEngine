@@ -40,8 +40,8 @@ public class TestGame extends Game
             ren.SetTexCoordMult(new Vector2f(50, 50));
             ground = new GameObject();
             ground.AddComponent(ren);
-
             AddObject(ground);
+            
 
         } catch (IOException | URISyntaxException ex)
         {

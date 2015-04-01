@@ -104,7 +104,7 @@ public class Texture
         int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
         ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
         boolean hasAlpha = image.getColorModel().hasAlpha();
-        System.out.println(hasAlpha);
+     
 
         for (int y = 0; y < image.getHeight(); y++)
         {
