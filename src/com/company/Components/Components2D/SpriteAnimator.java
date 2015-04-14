@@ -22,9 +22,9 @@ public class SpriteAnimator extends PlaneTextureRenderer
 
     Animator<Vector2f> animator;
 
-    public SpriteAnimator(float width, float height, float zIndex, int texture, Vector2f idle) throws IOException, URISyntaxException
+    public SpriteAnimator(int texture, Vector2f idle) throws IOException, URISyntaxException
     {
-        super(width, height, zIndex, texture);
+        super(texture);
         animator = new Animator<>(idle, offSet, "texCoords");
         animator.SetToTargetAction(() ->
         {
@@ -32,9 +32,9 @@ public class SpriteAnimator extends PlaneTextureRenderer
         });
     }
 
-    public SpriteAnimator(float width, float height, float zIndex, int texture, Vector2f[] texCoords) throws IOException, URISyntaxException
+    public SpriteAnimator(int texture, Vector2f[] texCoords) throws IOException, URISyntaxException
     {
-        super(width, height, zIndex, texture, texCoords);
+        super(texture, texCoords);
     }
 
     public void AddAnimation(String name, ArrayList<Vector2f> texCoords, float time, boolean repeating)

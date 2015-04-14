@@ -6,9 +6,10 @@
 package com.company.Core;
 
 import com.company.Components.Components2D.shaders.GuiRendererShader;
-import com.company.Rendering.GuiTexture;
 import com.company.Math.Vector2f;
 import com.company.Math.Vector3f;
+import com.company.Rendering.GuiTexture;
+import com.company.Rendering.GuiTextureResource;
 import com.company.Rendering.Mesh;
 import com.company.Rendering.RenderingEngine;
 import com.company.Rendering.Shader;
@@ -44,8 +45,8 @@ public class GuiRenderer extends GameComponent
 
     private final Mesh quad;
     private GuiRendererShader shader = new GuiRendererShader();
-    private ArrayList<GuiTexture> textures;
-    private GuiTexture current;
+    private ArrayList<GuiTextureResource> textures;
+    private GuiTextureResource current;
 
     public GuiRenderer()
     {
@@ -81,17 +82,17 @@ public class GuiRenderer extends GameComponent
     @Override
     public void UpdateUniforms()
     {
-        GetShader().SetUniform("offSet", current.getOffSet());
-        GetShader().SetUniform("tileSize", current.getTileSize());
+        GetShader().SetUniform("offSet", current.GetOffSet());
+        GetShader().SetUniform("tileSize", current.GetTileSize());
         GetShader().SetUniform("transformMatrix", GetTransform().GetTransformation());
-        GetShader().Set2DSamplerUniform("texture", GetParent().GetGame().GetRenderingEngine().GetSampler(current.getTexture()));
+        GetShader().Set2DSamplerUniform("texture", GetParent().GetGame().GetRenderingEngine().GetSampler(current.GetTexture()));
 
     }
 
     private void UpdateTransform()
     {
-        GetTransform().SetPosition(new Vector3f(current.getPos().GetX(), current.getPos().GetY(), 0));
-        GetTransform().SetScale(new Vector3f(current.getScale().GetX(), current.getScale().GetY(), 1));
+        GetTransform().SetPosition(new Vector3f(current.GetPosition().GetX(), current.GetPosition().GetY(), 0));
+        GetTransform().SetScale(new Vector3f(current.GetScale().GetX(), current.GetScale().GetY(), 1));
     }
 
     public void AddTexture(GuiTexture texture)
@@ -116,7 +117,5 @@ public class GuiRenderer extends GameComponent
     {
         return shader.GetBaseShader();
     }
-
-    
 
 }

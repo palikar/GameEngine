@@ -5,21 +5,26 @@
  */
 package com.company.Rendering;
 
+import com.company.Core.Input;
 import com.company.Math.Vector2f;
-import com.company.Rendering.Texture;
 
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class GuiTexture
+public class GuiTexture implements GuiTextureResource
 {
 
-    private Texture texture;
-    private Vector2f pos;
-    private Vector2f scale;
-    private Vector2f tileSize;
-    private Vector2f offSet;
+    private final Texture texture;
+    private final Vector2f pos;
+    private final Vector2f scale;
+    private final Vector2f tileSize;
+    private final Vector2f offSet;
+
+    public GuiTexture(Texture texture, Vector2f pos, Vector2f scale)
+    {
+        this(texture, pos, scale, new Vector2f(1, 1), new Vector2f());
+    }
 
     public GuiTexture(Texture texture, Vector2f pos, Vector2f scale, Vector2f tileSize, Vector2f offSet)
     {
@@ -30,29 +35,44 @@ public class GuiTexture
         this.offSet = offSet;
     }
 
-    public Texture getTexture()
+    @Override
+    public Texture GetTexture()
     {
         return texture;
     }
 
-    public Vector2f getPos()
+    @Override
+    public Vector2f GetPosition()
     {
         return pos;
     }
 
-    public Vector2f getScale()
+    @Override
+    public Vector2f GetScale()
     {
         return scale;
     }
 
-    public Vector2f getTileSize()
+    @Override
+    public Vector2f GetTileSize()
     {
         return tileSize;
     }
 
-    public Vector2f getOffSet()
+    @Override
+    public Vector2f GetOffSet()
     {
         return offSet;
+    }
+
+    @Override
+    public void Update(double delta)
+    {
+    }
+
+    @Override
+    public void Input(Input input)
+    {
     }
 
 }

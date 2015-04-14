@@ -3,7 +3,6 @@ package com.company.Components.Components2D;
 import com.company.Components.Components2D.shaders.PlaneTextureRenereShader;
 import com.company.Core.GameComponent;
 import com.company.Core.GameObject;
-import com.company.Math.Matrix4f;
 import com.company.Math.Vector2f;
 import com.company.Math.Vector3f;
 import com.company.Rendering.Mesh;
@@ -19,32 +18,28 @@ import org.lwjgl.opengl.GL11;
 public class PlaneTextureRenderer extends GameComponent
 {
 
-    float width, height, zIndex;
-    Vector2f texCoordMult, tileSize, offSet;
-    Vertex[] vertices;
-    int[] indices;
-    int texture;
-    Mesh mesh;
-    PlaneTextureRenereShader shader = new PlaneTextureRenereShader();
+    protected Vector2f texCoordMult, tileSize, offSet;
+    private Vertex[] vertices;
+    private int[] indices;
+    private int texture;
+    private Mesh mesh;
+    private PlaneTextureRenereShader shader = new PlaneTextureRenereShader();
     private boolean blending = false;
 
-    public PlaneTextureRenderer(float width, float height, float zIndex, int texture) throws IOException, URISyntaxException
+    public PlaneTextureRenderer(int texture) throws IOException, URISyntaxException
     {
-        this(width, height, zIndex, texture, null);
+        this(texture, null);
     }
 
-    public PlaneTextureRenderer(float width, float height, float zIndex, int texture, Vector2f[] texCoords) throws IOException, URISyntaxException
+    public PlaneTextureRenderer(int texture, Vector2f[] texCoords) throws IOException, URISyntaxException
     {
-        this.width = width;
-        this.height = height;
-        this.texture = texture;
-        this.zIndex = zIndex;
 
         this.texCoordMult = new Vector2f(1f, 1f);
         this.tileSize = new Vector2f();
         this.offSet = new Vector2f();
+        this.texture = texture;
 
-        InitVerticesAndIndices(width / 2, height / 2, zIndex);
+        InitVerticesAndIndices(0.5f, 0.5f, 0);
         if (texCoords != null)
         {
             SetTexCoord(texCoords);

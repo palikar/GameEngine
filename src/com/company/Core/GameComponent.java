@@ -30,7 +30,7 @@ public class GameComponent implements ShaderedObject
 
     public void Update(double delta)
     {
-        if (!this.render)
+        if (!this.update)
         {
             return;
         }
@@ -38,7 +38,7 @@ public class GameComponent implements ShaderedObject
 
     public void Render(RenderingEngine renderingEngine)
     {
-        if (!this.update)
+        if (!this.render)
         {
             return;
         }

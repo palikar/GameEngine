@@ -1,6 +1,7 @@
 package com.company.Core;
 
 import com.company.Components.Components2D.shaders.ShaderedObject;
+import com.company.Math.Vector2f;
 import com.company.Rendering.Camera;
 import com.company.Rendering.RenderingEngine;
 import java.util.ArrayList;
@@ -21,10 +22,12 @@ public abstract class Game
     private boolean newAdded = false;
     private boolean guiEnabled = false;
     private GuiRenderer guiRenderer;
+    private Vector2f size;
 
     public void Init(CoreEngine engine)
     {
         this.engine = engine;
+        size = new Vector2f(engine.GetWidth(), engine.GetHeight());
         renderingEngine = RenderingEngine.getInstance();
         renderingEngine.Init(engine.GetHeight(), engine.GetHeight());
         mainCamera = new Camera();
@@ -68,7 +71,7 @@ public abstract class Game
                 }
                 if (obj instanceof GameObject)
                 {
-                    ((GameObject) obj).Render(renderingEngine);
+                    ((GameObject) obj).RenderAll(renderingEngine);
                 }
             }
         } else
@@ -163,5 +166,10 @@ public abstract class Game
     public GuiRenderer GetGui()
     {
         return guiRenderer;
+    }
+
+    public Vector2f GetSize()
+    {
+        return size;
     }
 }
