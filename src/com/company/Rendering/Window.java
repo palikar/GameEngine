@@ -18,8 +18,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 /**
  * Created by Stanislav on 15.2.2015 г..
  */
-public class Window
-{
+public class Window {
 
     private static Window instance = new Window();
 
@@ -27,42 +26,38 @@ public class Window
 
     private long window;
 
-    private Window()
-    {
+    private Window() {
 
     }
 
-    public static Window getInstance()
-    {
+    public static Window getInstance() {
         return instance;
     }
 
-    public void CreateWindow(int width, int height, String title)
-    {
+    public void CreateWindow(int width, int height, String title) {
 
         Init(width, height, title);
         GLContext.createFromCurrent();
+        if (GlobalSpace.DEBUG) {
+            System.out.println("Maximum OpenGL texture samplers:" + GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+            System.out.println("OpenGL version: " + glGetString(GL_VERSION));
+        }
 
     }
 
-    public void Render()
-    {
+    public void Render() {
         glfwSwapBuffers(window);
         glfwPollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    private void Init(int width, int height, String title)
-    {
-        if (GlobalSpace.DEBUG)
-        {
+    private void Init(int width, int height, String title) {
+        if (GlobalSpace.DEBUG) {
             System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
-            System.out.println("Maximum OpenGL texture samplers:" + GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
         }
         glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
-        if (glfwInit() != GL11.GL_TRUE)
-        {
+        if (glfwInit() != GL11.GL_TRUE) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
         glfwDefaultWindowHints();
@@ -71,8 +66,7 @@ public class Window
 
         this.window = glfwCreateWindow(width, height, title, NULL, NULL);
 
-        if (window == NULL)
-        {
+        if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
@@ -86,26 +80,22 @@ public class Window
 
     }
 
-    public boolean isCloseRequested()
-    {
+    public boolean isCloseRequested() {
         return glfwWindowShouldClose(window) == GL_TRUE;
     }
 
-    public long getWindow()
-    {
+    public long getWindow() {
         return window;
     }
 
-    public void Dispose()
-    {
+    public void Dispose() {
         glfwDestroyWindow(window);
         errorCallback.release();
         glfwTerminate();
 
     }
 
-    public void SetTitle(String string)
-    {
+    public void SetTitle(String string) {
         glfwSetWindowTitle(window, string);
     }
 }

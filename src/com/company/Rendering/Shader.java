@@ -20,8 +20,7 @@ import static org.lwjgl.opengl.GL20.*;
  *
  * @author Stanislav
  */
-public class Shader
-{
+public class Shader {
 
     public static final int vertPosLocation = 0;
     public static final int texCoordLocation = 1;
@@ -30,11 +29,9 @@ public class Shader
     private final int program;
     private HashMap<String, Integer> uniforms;
 
-    public Shader()
-    {
+    public Shader() {
         program = glCreateProgram();
-        if (program == 0)
-        {
+        if (program == 0) {
             System.err.println("Shader failed");
             System.exit(1);
         }
@@ -42,22 +39,18 @@ public class Shader
 
     }
 
-    public void Bind()
-    {
+    public void Bind() {
         glUseProgram(program);
     }
 
-    public void Unbind()
-    {
+    public void Unbind() {
         glUseProgram(0);
     }
 
-    public void AddUniform(String name)
-    {
+    public void AddUniform(String name) {
         Bind();
         int location = glGetUniformLocation(program, name);
-        if (location == 0xFFFFFFFF)
-        {
+        if (location == 0xFFFFFFFF) {
             System.err.println("Uniform location Fucked up");
             System.exit(1);
         }
@@ -65,77 +58,64 @@ public class Shader
         Unbind();
     }
 
-    public void SetUniform(String name, int value)
-    {
+    public void SetUniform(String name, int value) {
         glUniform1i(uniforms.get(name), value);
     }
 
-    public void SetUniform(String name, float value)
-    {
+    public void SetUniform(String name, float value) {
         glUniform1f(uniforms.get(name), value);
     }
 
-    public void SetUniform(String name, Vector2f value)
-    {
+    public void SetUniform(String name, Vector2f value) {
         glUniform2f(uniforms.get(name), value.GetX(), value.GetY());
     }
 
-    public void SetUniform(String name, Vector3f value)
-    {
+    public void SetUniform(String name, Vector3f value) {
         glUniform3f(uniforms.get(name), value.GetX(), value.GetY(), value.GetZ());
     }
 
-    public void SetUniform(String name, Matrix4f value)
-    {
-        glUniformMatrix4(uniforms.get(name), true, Util.CreateFlippedBuffer(value));
+    public void SetUniform(String name, Matrix4f value) {
+
+        glUniformMatrix4fv(uniforms.get(name), true, Util.CreateFlippedBuffer(value));
     }
 
-    public void Set2DSamplerUniform(String name, int samplerSlot)
-    {
+    public void Set2DSamplerUniform(String name, int samplerSlot) {
         glUniform1i(uniforms.get(name), samplerSlot);
 
     }
 
-    public void compileShader()
-    {
+    public void compileShader() {
         glLinkProgram(program);
-        if (glGetProgrami(program, GL_LINK_STATUS) == 0)
-        {
+        if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
             System.err.println(glGetShaderInfoLog(program, 1024));
             System.exit(1);
         }
         glValidateProgram(program);
-        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0)
-        {
+        if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
             System.err.println(glGetShaderInfoLog(program, 1024));
             System.exit(1);
         }
 
     }
 
-    public void AddVertexShader(String text)
-    {
+    public void AddVertexShader(String text) {
         AddProgram(text, GL_VERTEX_SHADER);
     }
 
-    public void AddFragmentShader(String text)
-    {
+    public void AddFragmentShader(String text) {
         AddProgram(text, GL_FRAGMENT_SHADER);
     }
 
-    private void AddProgram(String text, int type)
-    {
+    private void AddProgram(String text, int type) {
         int shader = glCreateShader(type);
-        if (shader == 0)
-        {
+        if (shader == 0) {
             System.err.println("Shader fail");
             System.exit(1);
         }
         glShaderSource(shader, text);
         glCompileShader(shader);
 
-        if (glGetShaderi(shader, GL_COMPILE_STATUS) == 0)
-        {
+        if (glGetShaderi(shader, GL_COMPILE_STATUS) == 0) {
             System.err.println(glGetShaderInfoLog(shader, 1024));
             System.exit(1);
         }
@@ -143,14 +123,12 @@ public class Shader
         glAttachShader(program, shader);
     }
 
-    public static String LoadShader(File file) throws IOException
-    {
+    public static String LoadShader(File file) throws IOException {
         StringBuilder shaderLines = new StringBuilder();
         BufferedReader shaderReader = new BufferedReader(new FileReader(file));
         String line;
 
-        while ((line = shaderReader.readLine()) != null)
-        {
+        while ((line = shaderReader.readLine()) != null) {
             shaderLines.append(line).append("\n");
         }
 
@@ -159,8 +137,7 @@ public class Shader
         return shaderLines.toString();
     }
 
-    public int GetShader()
-    {
+    public int GetShader() {
         return program;
     }
 

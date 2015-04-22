@@ -77,11 +77,11 @@ public class MoveBehaviour extends GameComponent
     public void Input(com.company.Core.Input input)
     {
         super.Input(input);
-        if (input.IsClicked(UP_KEY))
+        if (input.IsKeyClicked(UP_KEY))
         {
             dY = speed;
         }
-        if (input.IsClicked(DOWN_KEY))
+        if (input.IsKeyClicked(DOWN_KEY))
         {
             dY = -speed;
         }
@@ -100,11 +100,11 @@ public class MoveBehaviour extends GameComponent
             dY = 0f;
             accY = 0;
         }
-        if (input.IsClicked(LEFT_KEY))
+        if (input.IsKeyClicked(LEFT_KEY))
         {
             dX = -speed;
         }
-        if (input.IsClicked(RIGHT_KEY))
+        if (input.IsKeyClicked(RIGHT_KEY))
         {
             dX = +speed;
         }

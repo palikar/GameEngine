@@ -11,6 +11,7 @@ import com.company.Math.Vector3f;
 import com.company.Rendering.GuiTexture;
 import com.company.Rendering.GuiTextureResource;
 import com.company.Rendering.Mesh;
+import com.company.Rendering.Rendereble;
 import com.company.Rendering.RenderingEngine;
 import com.company.Rendering.Shader;
 import com.company.Rendering.Vertex;
@@ -25,31 +26,24 @@ import org.lwjgl.opengl.GL11;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class GuiRenderer extends GameComponent
-{
+public class GuiRenderer extends GameComponent implements Rendereble{
 
-    private final static Vertex[] vertices = new Vertex[]
-    {
+    private final static Vertex[] vertices = new Vertex[]{
         new Vertex(new Vector3f(-1, 1, 0), new Vector2f(0, 0)),
         new Vertex(new Vector3f(1, -1, 0), new Vector2f(1, 1)),
         new Vertex(new Vector3f(-1, -1, 0), new Vector2f(0, 1)),
-        new Vertex(new Vector3f(1, 1, 0), new Vector2f(1, 0)),
+        new Vertex(new Vector3f(1, 1, 0), new Vector2f(1, 0)),};
 
-    };
-
-    private final static int[] indices = new int[]
-    {
+    private final static int[] indices = new int[]{
         0, 1, 2,
-        0, 3, 1,
-    };
+        0, 3, 1,};
 
     private final Mesh quad;
     private GuiRendererShader shader = new GuiRendererShader();
     private ArrayList<GuiTextureResource> textures;
     private GuiTextureResource current;
 
-    public GuiRenderer()
-    {
+    public GuiRenderer() {
         textures = new ArrayList<>();
         quad = new Mesh();
         quad.AddVerteces(vertices, indices);
@@ -57,31 +51,27 @@ public class GuiRenderer extends GameComponent
     }
 
     @Override
-    public void Render(RenderingEngine renderingEngine)
-    {
+    public void Render(RenderingEngine renderingEngine) {
         super.Render(renderingEngine);
         GetParent().GetGame().GetRenderingEngine().BindShader(GetShader());
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        for (int i = 0; i < textures.size(); i++)
-        {
+        for (int i = 0; i < textures.size(); i++) {
             current = textures.get(i);
             UpdateTransform();
             UpdateUniforms();
-            quad.draw();
+
         }
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
     }
 
     @Override
-    public void Update(double delta)
-    {
+    public void Update(double delta) {
         super.Update(delta);
     }
 
     @Override
-    public void UpdateUniforms()
-    {
+    public void UpdateUniforms() {
         GetShader().SetUniform("offSet", current.GetOffSet());
         GetShader().SetUniform("tileSize", current.GetTileSize());
         GetShader().SetUniform("transformMatrix", GetTransform().GetTransformation());
@@ -89,33 +79,42 @@ public class GuiRenderer extends GameComponent
 
     }
 
-    private void UpdateTransform()
-    {
+    private void UpdateTransform() {
         GetTransform().SetPosition(new Vector3f(current.GetPosition().GetX(), current.GetPosition().GetY(), 0));
         GetTransform().SetScale(new Vector3f(current.GetScale().GetX(), current.GetScale().GetY(), 1));
     }
 
-    public void AddTexture(GuiTexture texture)
-    {
+    public void AddTexture(GuiTexture texture) {
         textures.add(texture);
     }
 
     @Override
-    public final void InitShader()
-    {
-        try
-        {
+    public final void InitShader() {
+        try {
             shader.InitShader();
-        } catch (IOException | URISyntaxException ex)
-        {
+        } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(GuiRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public Shader GetShader()
-    {
+    public Shader GetShader() {
         return shader.GetBaseShader();
+    }
+
+    @Override
+    public int GetVAO() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int GetIBO() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int GetBufferSize() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

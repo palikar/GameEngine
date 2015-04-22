@@ -54,7 +54,6 @@ public class TestGame extends Game {
             keys.add(new Vector2f(0, 0));
             keys.add(new Vector2f(2, 0));
             keys.add(new Vector2f(0, 0));
-
             sprite.AddAnimation("walk", keys, 0.25f, true);
 
             person = new GameObject();

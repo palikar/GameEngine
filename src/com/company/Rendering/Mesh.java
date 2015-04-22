@@ -5,23 +5,21 @@ import com.company.Util.Util;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.*;
-import org.lwjgl.opengl.GL30;
+import static org.lwjgl.opengl.GL30.*;
 
-public class Mesh
-{
+public class Mesh {
 
     private int vbo;
     private int ibo;
     private int vao;
     private int size;
 
-    public Mesh()
-    {
+    public Mesh() {
         vbo = glGenBuffers();
         ibo = glGenBuffers();
-        vao = GL30.glGenVertexArrays();
+        vao = glGenVertexArrays();
 
-        GL30.glBindVertexArray(vao);
+        glBindVertexArray(vao);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
         glEnableVertexAttribArray(Shader.vertPosLocation);
@@ -33,13 +31,12 @@ public class Mesh
         glVertexAttribPointer(Shader.vertNormalLocation, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        GL30.glBindVertexArray(0);
+        glBindVertexArray(0);
 
         size = 0;
     }
 
-    public void AddVerteces(Vertex[] vertices, int[] indices)
-    {
+    public void AddVerteces(Vertex[] vertices, int[] indices) {
         size = vertices.length * Vertex.SIZE;
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -50,19 +47,15 @@ public class Mesh
 
     }
 
-    public void draw()
-    {
-
-        GL30.glBindVertexArray(vao);
-       // glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-        glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
-
-        GL30.glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
+    public int GetVAO() {
+        return vao;
     }
 
+    public int GetIBO() {
+        return ibo;
+    }
+
+    public int GetBufferSize() {
+        return size;
+    }
 }

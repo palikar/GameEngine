@@ -25,39 +25,37 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PlaneTextureRenereShader extends BaseShader
-{
+public class PlaneTextureRenereShader extends BaseShader {
 
-    public void InitShader() throws IOException, URISyntaxException
-    {
-        
-        if (shader == null)
-        {
-            shader = new Shader();
+    public PlaneTextureRenereShader() {
+        InitShader();
+    }
 
-            shader.AddVertexShader(Shader.LoadShader(new File(getClass().getResource(".\\planeRendererShader.vs").toURI())));
-            shader.AddFragmentShader(Shader.LoadShader(new File(getClass().getResource(".\\planeRendererShader.fs").toURI())));
-            shader.compileShader();
-            shader.AddUniform("transformMatrix");
-            shader.AddUniform("viewMatrix");
-            shader.AddUniform("texCoordMult");
-            shader.AddUniform("texture");
-            shader.AddUniform("tileSize");
-            shader.AddUniform("offSet");
+    public void InitShader() {
+
+        if (shader == null) {
+            try {
+                shader = new Shader();
+                shader.AddVertexShader(Shader.LoadShader(new File(getClass().getResource(".\\planeRendererShader.vs").toURI())));
+                shader.AddFragmentShader(Shader.LoadShader(new File(getClass().getResource(".\\planeRendererShader.fs").toURI())));
+                shader.compileShader();
+                shader.AddUniform("transformMatrix");
+                shader.AddUniform("viewMatrix");
+                shader.AddUniform("texCoordMult");
+                shader.AddUniform("texture");
+                shader.AddUniform("tileSize");
+                shader.AddUniform("offSet");
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(PlaneTextureRenereShader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PlaneTextureRenereShader.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    public Shader GetBaseShader()
-    {
-        if (shader == null)
-        {
-            try
-            {
-                InitShader();
-            } catch (IOException | URISyntaxException ex)
-            {
-                Logger.getLogger(PlaneTextureRenereShader.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public Shader GetBaseShader() {
+        if (shader == null) {
+            InitShader();
         }
         return shader;
     }

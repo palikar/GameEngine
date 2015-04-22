@@ -11,8 +11,7 @@ import java.util.Comparator;
 /**
  * Created by Stanislav on 15.2.2015 г..
  */
-public abstract class Game
-{
+public abstract class Game {
 
     private GameObject rootGameObject;
     private CoreEngine engine;
@@ -24,8 +23,7 @@ public abstract class Game
     private GuiRenderer guiRenderer;
     private Vector2f size;
 
-    public void Init(CoreEngine engine)
-    {
+    public void Init(CoreEngine engine) {
         this.engine = engine;
         size = new Vector2f(engine.GetWidth(), engine.GetHeight());
         renderingEngine = RenderingEngine.getInstance();
@@ -39,113 +37,51 @@ public abstract class Game
 
     protected abstract void InitCamera();
 
-    protected void AddObject(GameObject object)
-    {
+    protected void AddObject(GameObject object) {
         GetRootGameObject().AddChild(object);
         ObjectAdded();
     }
 
-    protected void Update(double delta)
-    {
+    protected void Update(double delta) {
         GetRootGameObject().UpdateAll(delta);
     }
 
-    protected void Input(Input input)
-    {
+    protected void Input(Input input) {
         GetRootGameObject().InputAll(input);
 
     }
 
-    protected void Render()
-    {
-        if (shaderSorting && newAdded)
-        {
-            newAdded = false;
-            ArrayList<ShaderedObject> objs = GetAllObjectsToRender(rootGameObject);
-
-            for (ShaderedObject obj : objs)
-            {
-                if (obj instanceof GameComponent)
-                {
-                    ((GameComponent) obj).Render(renderingEngine);
-                }
-                if (obj instanceof GameObject)
-                {
-                    ((GameObject) obj).RenderAll(renderingEngine);
-                }
-            }
-        } else
-        {
-            GetRootGameObject().RenderAll(renderingEngine);
-        }
+    protected void Render() {
+        GetRootGameObject().RenderAll(renderingEngine);
+        renderingEngine.RenderAll();
     }
 
-    public CoreEngine GetEngine()
-    {
+    public CoreEngine GetEngine() {
         return engine;
     }
 
-    protected GameObject GetRootGameObject()
-    {
-        if (rootGameObject == null)
-        {
+    protected GameObject GetRootGameObject() {
+        if (rootGameObject == null) {
             rootGameObject = new GameObject();
             rootGameObject.Init(this);
         }
         return rootGameObject;
     }
 
-    public RenderingEngine GetRenderingEngine()
-    {
+    public RenderingEngine GetRenderingEngine() {
         return renderingEngine;
     }
 
-    private ArrayList<ShaderedObject> GetAllObjectsToRender(GameObject root)
-    {
-        ArrayList<ShaderedObject> objects = new ArrayList<>();
-        for (GameObject obj : root.children)
-        {
-            objects.add(obj);
-            objects.addAll(obj.components);
-            if (!obj.children.isEmpty())
-            {
-                objects.addAll(GetAllObjectsToRender(obj));
-
-            }
-
-        }
-        Collections.sort(objects, (o1, o2) ->
-        {
-            if (o1.GetShader() != null && o2.GetShader() != null)
-            {
-                if (o1.GetShader().GetShader() == o2.GetShader().GetShader())
-                {
-                    return 0;
-                } else
-                {
-                    return 1;
-                }
-
-            }
-            return 0;
-        });
-        return objects;
-    }
-
-    public void SetShaderSorting(boolean shaderSorting)
-    {
+    public void SetShaderSorting(boolean shaderSorting) {
         this.shaderSorting = shaderSorting;
     }
 
-    public void ObjectAdded()
-    {
+    public void ObjectAdded() {
         newAdded = true;
     }
 
-    public void EnableGui()
-    {
-        if (guiRenderer == null)
-        {
+    public void EnableGui() {
+        if (guiRenderer == null) {
             guiRenderer = new GuiRenderer();
             AddObject(new GameObject().AddComponent(guiRenderer));
         }
@@ -155,21 +91,18 @@ public abstract class Game
         guiEnabled = true;
     }
 
-    public void DisableGui()
-    {
+    public void DisableGui() {
         guiEnabled = false;
         guiRenderer.SetRenderEnable(false);
         guiRenderer.SetInputEnable(false);
         guiRenderer.SetInputEnable(false);
     }
 
-    public GuiRenderer GetGui()
-    {
+    public GuiRenderer GetGui() {
         return guiRenderer;
     }
 
-    public Vector2f GetSize()
-    {
+    public Vector2f GetSize() {
         return size;
     }
 }

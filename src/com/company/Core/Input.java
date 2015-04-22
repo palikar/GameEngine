@@ -119,7 +119,7 @@ public class Input
         return keyboard.IsPressed(key);
     }
 
-    public boolean IsClicked(int key)
+    public boolean IsKeyClicked(int key)
     {
         return keyboard.IsClicked(key);
     }
