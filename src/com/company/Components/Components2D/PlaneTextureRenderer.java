@@ -104,7 +104,6 @@ public class PlaneTextureRenderer extends GameComponent implements Rendereble {
     @Override
     public void Render(RenderingEngine renderingEngine) {
         super.Render(renderingEngine);
-        
         renderingEngine.Submit(this);
     }
 
@@ -144,6 +143,14 @@ public class PlaneTextureRenderer extends GameComponent implements Rendereble {
     @Override
     public int GetBufferSize() {
         return mesh.GetBufferSize();
+    }
+
+    @Override
+    public void PreRender() {
+    }
+
+    @Override
+    public void PostRender() {
     }
 
 }

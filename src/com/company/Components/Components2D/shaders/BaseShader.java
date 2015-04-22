@@ -32,6 +32,6 @@ public abstract class BaseShader
 
     public abstract Shader GetBaseShader();
 
-    public abstract void InitShader() throws IOException, URISyntaxException;
+    public abstract void InitShader();
 
 }

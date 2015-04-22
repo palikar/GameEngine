@@ -19,21 +19,27 @@ import java.util.logging.Logger;
 public class GuiRendererShader extends BaseShader
 {
 
-    public void InitShader() throws IOException, URISyntaxException
+    public void InitShader()
     {
 
        
         if (shader == null)
         {
-            shader = new Shader();
-
-            shader.AddVertexShader(Shader.LoadShader(new File(getClass().getResource(".\\guiRendererShader.vs").toURI())));
-            shader.AddFragmentShader(Shader.LoadShader(new File(getClass().getResource(".\\guiRedererShader.fs").toURI())));
-            shader.compileShader();
-            shader.AddUniform("transformMatrix");
-            shader.AddUniform("texture");
-            shader.AddUniform("tileSize");
-            shader.AddUniform("offSet");
+            try {
+                shader = new Shader();
+                
+                shader.AddVertexShader(Shader.LoadShader(new File(getClass().getResource(".\\guiRendererShader.vs").toURI())));
+                shader.AddFragmentShader(Shader.LoadShader(new File(getClass().getResource(".\\guiRedererShader.fs").toURI())));
+                shader.compileShader();
+                shader.AddUniform("transformMatrix");
+                shader.AddUniform("texture");
+                shader.AddUniform("tileSize");
+                shader.AddUniform("offSet");
+            } catch (IOException ex) {
+                Logger.getLogger(GuiRendererShader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(GuiRendererShader.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -41,13 +47,7 @@ public class GuiRendererShader extends BaseShader
     {
         if (shader == null)
         {
-            try
-            {
-                InitShader();
-            } catch (IOException | URISyntaxException ex)
-            {
-                Logger.getLogger(PlaneTextureRenereShader.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            InitShader();
         }
         return shader;
     }

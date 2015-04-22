@@ -1,6 +1,5 @@
 package com.company.Core;
 
-import com.company.Components.Components2D.shaders.ShaderedObject;
 import com.company.Math.Transform;
 import com.company.Rendering.RenderingEngine;
 import com.company.Rendering.Shader;

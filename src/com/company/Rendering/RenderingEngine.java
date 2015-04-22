@@ -77,21 +77,25 @@ public class RenderingEngine {
 
     }
 
-    public RenderingEngine Submit(Rendereble object) {
-        object.InitShader();
-        return this;
-    }
-
     public RenderingEngine RenderAll() {
         objectsToRender.forEach((Rendereble object) -> {
             BindShader(object.GetShader());
             object.UpdateUniforms();
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetIBO());
+            object.PreRender();
             glDrawElements(GL_TRIANGLES, object.GetBufferSize(), GL_UNSIGNED_INT, 0);
+            object.PostRender();
             glBindVertexArray(0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         });
+        objectsToRender.clear();
+        return this;
+    }
+
+    public RenderingEngine Submit(Rendereble object) {
+        object.InitShader();
+        objectsToRender.add(object);
         return this;
     }
 

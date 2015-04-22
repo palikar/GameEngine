@@ -1,6 +1,5 @@
 package com.company.Core;
 
-import com.company.Components.Components2D.shaders.ShaderedObject;
 import com.company.Math.Transform;
 import com.company.Rendering.RenderingEngine;
 import com.company.Rendering.Shader;
@@ -10,8 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Stanislav on 16.2.2015 г..
  */
-public class GameObject implements ShaderedObject
-{
+public class GameObject {
 
     protected final ArrayList<GameComponent> components;
     protected final ArrayList<GameObject> children;
@@ -19,157 +17,112 @@ public class GameObject implements ShaderedObject
     private Transform transform;
     private boolean updateEnable = true, inputEnable = true, renderEneble = true;
 
-    public GameObject()
-    {
+    public GameObject() {
         children = new ArrayList<>();
         components = new ArrayList<>();
         transform = new Transform();
     }
 
-    public GameObject AddChild(GameObject child)
-    {
+    public GameObject AddChild(GameObject child) {
         child.Init(game);
         child.GetTransform().SetParent(transform);
         children.add(child);
         return this;
     }
 
-    public GameObject AddComponent(GameComponent component)
-    {
+    public GameObject AddComponent(GameComponent component) {
         component.Init(this);
         components.add(component);
-        if (game != null)
-        {
+        if (game != null) {
             game.ObjectAdded();
         }
         return this;
     }
 
-    public Game GetGame()
-    {
+    public Game GetGame() {
         return game;
     }
 
-    public void Init(Game game)
-    {
+    public void Init(Game game) {
         this.game = game;
     }
 
-    public final void RenderAll(RenderingEngine renderingEngine)
-    {
-        if (renderEneble)
-        {
+    public final void RenderAll(RenderingEngine renderingEngine) {
+        if (renderEneble) {
             Render(renderingEngine);
         }
 
-        for (GameObject child : children)
-        {
+        for (GameObject child : children) {
             child.RenderAll(renderingEngine);
         }
 
     }
 
-    public final void UpdateAll(double delta)
-    {
-        if (updateEnable)
-        {
+    public final void UpdateAll(double delta) {
+        if (updateEnable) {
             Update(delta);
         }
-        for (GameObject child : children)
-        {
+        for (GameObject child : children) {
             child.UpdateAll(delta);
         }
     }
 
-    public final void InputAll(Input input)
-    {
-        if (inputEnable)
-        {
+    public final void InputAll(Input input) {
+        if (inputEnable) {
             Input(input);
         }
-        for (GameObject child : children)
-        {
+        for (GameObject child : children) {
             child.InputAll(input);
         }
 
     }
 
-    public void Render(RenderingEngine renderingEngine)
-    {
-        for (GameComponent component : components)
-        {
+    public void Render(RenderingEngine renderingEngine) {
+        for (GameComponent component : components) {
             component.Render(renderingEngine);
         }
 
     }
 
-    public void Update(double delta)
-    {
-        for (GameComponent component : components)
-        {
+    public void Update(double delta) {
+        for (GameComponent component : components) {
             component.Update(delta);
         }
 
     }
 
-    public void Input(Input input)
-    {
-        for (GameComponent component : components)
-        {
+    public void Input(Input input) {
+        for (GameComponent component : components) {
             component.Input(input);
         }
 
     }
 
-    public Transform GetTransform()
-    {
+    public Transform GetTransform() {
         return transform;
     }
 
-    public boolean IsUpdateEnable()
-    {
+    public boolean IsUpdateEnable() {
         return updateEnable;
     }
 
-    public void SetUpdateEnable(boolean updateEnable)
-    {
+    public void SetUpdateEnable(boolean updateEnable) {
         this.updateEnable = updateEnable;
     }
 
-    public boolean IsInputEnable()
-    {
+    public boolean IsInputEnable() {
         return inputEnable;
     }
 
-    public void SetInputEnable(boolean inputEnable)
-    {
+    public void SetInputEnable(boolean inputEnable) {
         this.inputEnable = inputEnable;
     }
 
-    public boolean IsRenderEneble()
-    {
+    public boolean IsRenderEneble() {
         return renderEneble;
     }
 
-    public void SetRenderEneble(boolean renderEneble)
-    {
+    public void SetRenderEneble(boolean renderEneble) {
         this.renderEneble = renderEneble;
     }
-
-    @Override
-    public void InitShader()
-    {
-    }
-
-    @Override
-    public Shader GetShader()
-    {
-        return null;
-    }
-
-    @Override
-    public void UpdateUniforms()
-    {
-    }
-
 }

@@ -22,4 +22,8 @@ public interface Rendereble {
     public int GetIBO();
 
     public int GetBufferSize();
+
+    public void PreRender();
+
+    public void PostRender();
 }
