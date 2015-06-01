@@ -9,7 +9,8 @@ package com.company.Rendering;
  *
  * @author User
  */
-public interface Rendereble {
+public interface Rendereble
+{
 
     public void InitShader();
 
@@ -23,7 +24,12 @@ public interface Rendereble {
 
     public int GetBufferSize();
 
-    public void PreRender();
+    public default void PreRender()
+    {
+    }
 
-    public void PostRender();
+    public default void PostRender()
+    {
+    }
+;
 }

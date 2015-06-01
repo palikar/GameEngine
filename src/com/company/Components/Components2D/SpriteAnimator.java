@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class SpriteAnimator extends PlaneTextureRenderer
 {
 
-    Animator<Vector2f> animator;
+    private Animator<Vector2f> animator;
 
     public SpriteAnimator(int texture, Vector2f idle) throws IOException, URISyntaxException
     {

@@ -8,7 +8,6 @@ import com.company.Core.Game;
 import com.company.Core.GameObject;
 import com.company.Math.Vector2f;
 import com.company.Math.Vector3f;
-import com.company.Rendering.GuiTexture;
 import com.company.Rendering.Texture;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,7 +19,8 @@ import org.lwjgl.glfw.GLFW;
 /**
  * Created by Stanislav on 22.2.2015 г..
  */
-public class TestGame extends Game {
+public class TestGame extends Game
+{
 
     GameObject ground;
     GameObject person;
@@ -30,9 +30,11 @@ public class TestGame extends Game {
 
     @Override
 
-    public void Init(CoreEngine engine) {
+    public void Init(CoreEngine engine)
+    {
         super.Init(engine);
-        try {
+        try
+        {
 
             Texture tilesTexture = new Texture("tiles.png");
             Texture potion = new Texture("pixelArt/knightSheet.png");
@@ -47,68 +49,93 @@ public class TestGame extends Game {
             AddObject(ground);
 
             sprite = new SpriteAnimator(GetRenderingEngine().GetSampler(potion), new Vector2f(0, 0));
-            sprite.SetTileSize(new Vector2f(1f / 3f, 1));
+            sprite.SetTileSize(new Vector2f(1f / 3f, 1f / 2f));
             sprite.SetOffSet(new Vector2f(0, 0));
             ArrayList<Vector2f> keys = new ArrayList<>();
             keys.add(new Vector2f(1, 0));
             keys.add(new Vector2f(0, 0));
             keys.add(new Vector2f(2, 0));
             keys.add(new Vector2f(0, 0));
-            sprite.AddAnimation("walk", keys, 0.25f, true);
+            sprite.AddAnimation("walk_forward", keys, 0.25f, true);
+            ArrayList<Vector2f> keys2 = new ArrayList<>();
+            keys2.add(new Vector2f(1, 1));
+            keys2.add(new Vector2f(0, 1));
+            keys2.add(new Vector2f(2, 1));
+            keys2.add(new Vector2f(0, 1));
+            sprite.AddAnimation("walk_backward", keys2, 0.25f, true);
 
             person = new GameObject();
             person.AddComponent(sprite);
             person.GetTransform().GetPosition().SetZ(0.1f);
-            person.GetTransform().SetScale(new Vector3f(64, 64, 1));
+            person.GetTransform().SetScale(new Vector3f(32, 32, 1));
 
             AddObject(person);
 
             // EnableGui();
             //GetGui().AddTexture(new GuiTexture(potion, new Vector2f(), new Vector2f(32, 32).Div(GetSize())));
-        } catch (IOException | URISyntaxException ex) {
+        } catch (IOException | URISyntaxException ex)
+        {
             Logger.getLogger(TestGame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    protected void Render() {
+    protected void Render()
+    {
         super.Render();
 
     }
 
     @Override
-    protected void Input(com.company.Core.Input input) {
+    protected void Input(com.company.Core.Input input)
+    {
         super.Input(input);
-        if (input.isKeyRealsed(GLFW.GLFW_KEY_S)) {
-            sprite.GetAnimator().Stop();
+        if (input.isKeyRealsed(GLFW.GLFW_KEY_W))
+        {
+            sprite.GetAnimator().Stop("walk_backward");
         }
-        if (input.IsKeyClicked(GLFW.GLFW_KEY_S)) {
-            sprite.GetAnimator().Play("walk");
+        if (input.isKeyRealsed(GLFW.GLFW_KEY_S))
+        {
+            sprite.GetAnimator().Stop("walk_forward");
         }
-        if (input.IsKeyPressed(GLFW.GLFW_KEY_S)) {
+        if (input.IsKeyClicked(GLFW.GLFW_KEY_S))
+        {
+            sprite.GetAnimator().Play("walk_forward");
+        }
+        if (input.IsKeyClicked(GLFW.GLFW_KEY_W))
+        {
+            sprite.GetAnimator().Play("walk_backward");
+        }
+        if (input.IsKeyPressed(GLFW.GLFW_KEY_S))
+        {
             person.GetTransform().SetPosition(person.GetTransform().GetPosition().Add(new Vector3f(0, -1, 0)));
         }
-        if (input.IsKeyPressed(GLFW.GLFW_KEY_W)) {
+        if (input.IsKeyPressed(GLFW.GLFW_KEY_W))
+        {
             person.GetTransform().SetPosition(person.GetTransform().GetPosition().Add(new Vector3f(0, 1, 0)));
         }
-        if (input.IsKeyPressed(GLFW.GLFW_KEY_D)) {
+        if (input.IsKeyPressed(GLFW.GLFW_KEY_D))
+        {
             person.GetTransform().SetPosition(person.GetTransform().GetPosition().Add(new Vector3f(1, 0, 0)));
         }
-        if (input.IsKeyPressed(GLFW.GLFW_KEY_A)) {
+        if (input.IsKeyPressed(GLFW.GLFW_KEY_A))
+        {
             person.GetTransform().SetPosition(person.GetTransform().GetPosition().Add(new Vector3f(-1, 0, 0)));
         }
 
     }
 
     @Override
-    protected void Update(double delta) {
+    protected void Update(double delta)
+    {
         super.Update(delta);
         GetRenderingEngine().GetCamera().GetTransform().SetPosition(
-                person.GetTransform().GetPosition().Add(new Vector3f(0 , 0, 0)));
+                person.GetTransform().GetPosition().Add(new Vector3f(0, 0, 0)));
     }
 
     @Override
-    protected void InitCamera() {
+    protected void InitCamera()
+    {
 
         GetRenderingEngine().GetCamera().InitOrthographic(
                 -GetEngine().GetWidth() / 7,

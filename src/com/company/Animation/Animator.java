@@ -68,6 +68,12 @@ public class Animator<Type> {
     public void Pause() {
         current.Stop();
     }
+    
+    public void Stop(String name){
+        if(name.equals(currentName)){
+            Stop();
+        }        
+    }
 
     public void Stop() {
         if(current == null){
