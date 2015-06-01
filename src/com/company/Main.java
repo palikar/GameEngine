@@ -7,8 +7,8 @@ import java.util.function.Function;
 public class Main {
 
     static {
-        System.load("F:\\Projects\\GameEngine\\lwjgl.dll");
-        System.load("F:\\Projects\\GameEngine\\OpenAL32.dll");
+        System.load("E:\\GameEngine\\lwjgl.dll");
+        System.load("E:\\GameEngine\\OpenAL32.dll");
 
     }
 
